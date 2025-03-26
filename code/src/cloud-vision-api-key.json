@@ -1,0 +1,15 @@
+
+{
+    "type": "service_account",
+    "project_id": "sacred-temple-454304-q5",
+    "private_key_id": "71d844b666026839f80fbfbbd08634b9bcfa9890",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCnMaiJpv0UWtlc\n/SYcXlppRe1hOJwgThvwLpZi7j8IaILYNT8uMHMV/OfaoO+t6Q+c4ebF13M4lfsR\nNBNQpjv7q5qo7mh1irNBr09YaLoIJNHhmDSiZzuVfzQH6f3opjG7gJKWbhPOxO2N\nCyxFQPEc5miwG4/3oSlO5TR5/ieAqrRum0K4FQSnG4AaJypZUaRvVifBE7rDldFO\nxqt8mLOuBIFaenKAcrdMVdZFvz3Q2sCAGVnGr78CxkkL2atlLI0J4JOMLitCKn07\nS1H9qyJNCLZK+gpBOraV+YLuzRYUKiHg5/ekLudUn73Llqlx/wVxKRh1iv9xNhnI\nRi4krNHZAgMBAAECggEABumNK7+9J9nHscn/iN23xDFxansSLV29VvU+H3H1Ji5X\n9oNhDNJQ98BAf6/2qMyBaj2GsnhBWb4Nprzt7YAp67JBDynoJK/q0FTkpWWTB2Iq\nUTbfOjWlZ31eU9NvPW6dkMB0jwaXCA3pOlMTbfuM3GKEQn+pOJYvpITiYgbJcE7N\nUcMxmD63j9Gc+LYfVMi3u0jnkaivFQq/Ex3DZu0TdXElW2NcU3jcFz2KawviweU6\nmPdG4L9n8SPm2RFqw5b7TGj/eCOxcFjbX0YdDJwApq0db7oOX3NviWTlK9ONk5sU\n8Xt1t2BbufrQlk3FqnYRUJphFelzR20rFllcF1UZHwKBgQDS0ghMB1PuJKG9jKl2\nkBMpDcP4iS+5iwHg6QQXXB6bY4IDMHfpGdAPG9Z0P8w2oW6/kChzvffn/3ePL5oq\nch56LiYBzCH0bdsXPc06hWwxPQU/9HYN20TfhZdS+EVLFl/ljG1ON1MzQ7OjkDS6\nq//JbZJP1Na3KpSBprmquaVBXwKBgQDLBjRCMAowNJsJnrmlt5I9NiS9jM5wpEG6\ndga+9OwxeApUipj6y6qumtM4laDY0KhIubhRgWR9D7MRQmfdEbD4ypl285KPi2OY\nzzKR2b8tRzadI06L9q2cB1HV8paWrixyCYQ7pvU0MxLhlB1je/7IfkGK81NfY3QN\nbeVJAoOfxwKBgAl5OLg56BKegMokxQS36rSAktrbR1K+JWJ29iEamaF/8jq0dd76\nsvfK13M33rRhwrlHABpbYgWB3FyJ1hKsOCRjaH/SLYBvY1YDB/LmRftcc5zxHlD3\nFnw445jt4SdDpSGKkurd35ZBJ5RlCYmN6xuhGd8OgGuQtUWyOUurtfpfAoGBAInF\nXwcfRHqr6B2iGYcMSG/DYzFB8QFdZcEbwL4qxHFZbWErYF6ogN3V8MnwN+OJzPj1\nFtAwhzmawsBOmN7a14YtLfEbnvRL+b1DtaRl6CbYsYX25KF0NyGvkegmo+wCq+SC\n8rnsNW9DzWdItJzDEwWJL/8T2hrcCW/niHWAAEQXAoGBAL5wQENJG8Gj4eODfeGn\nomIAmxD9iNwJ4ChzbE0Sv35iSgghcmBrQdSw8xjtPbf/t2tjxeqaMeYVnnmpe22/\n9Yly6TNuGGaML2Dq1W+YCuR+aygx2GPo04pN379GZurUgf6bTTN3Ou1ZTzrWq9AB\n7lzt1AGgEGGZ2xzYdjoTAhys\n-----END PRIVATE KEY-----\n",
+    "client_email": "email-categoriser@sacred-temple-454304-q5.iam.gserviceaccount.com",
+    "client_id": "105689356809534050889",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/email-categoriser%40sacred-temple-454304-q5.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+}
+

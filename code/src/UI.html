@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Request Processor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background: #007BFF;
+            color: #fff;
+            padding: 20px 40px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .container {
+            width: 95%;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        th {
+            background: #007BFF;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            color: white;
+            background: #28a745;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #218838;
+        }
+
+        .duplicate-flag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            border: 1px solid #ffeeba;
+            font-weight: 500;
+        }
+
+        .score-badge {
+            background-color: #ffeeba;
+            color: #856404;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 4px;
+        }
+
+        .no-duplicate {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            border: 1px solid #c3e6cb;
+            font-weight: 500;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        /* Tab Styles */
+        .tab-container {
+            margin-bottom: 20px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #007BFF;
+            padding-bottom: 10px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: #007BFF;
+            color: white;
+            border-color: #007BFF;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        .detail-section {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .detail-section h3 {
+            color: #007BFF;
+            margin-top: 0;
+        }
+
+        .keywords-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .keyword-box {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .description-box {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+        }
+
+        .confidence-section {
+            margin-top: 20px;
+        }
+
+        .confidence-section h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .confidence-score {
+            margin: 8px 0;
+            padding-left: 15px;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #007BFF;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+
+            header, footer {
+                padding: 15px;
+            }
+
+            .container {
+                width: 98%;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+
+        .attachments-section {
+            margin-top: 15px;
+            padding: 10px 0;
+        }
+
+        .attachments-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .attachment-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 8px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #e9ecef;
+        }
+
+        .attachment-icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .attachment-description {
+            margin: 5px 0 0 24px;
+            color: #666;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .attachment-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .attachment-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .attachment-name {
+            font-size: 1em;
+            color: black;
+        }
+
+        .attachment-description {
+            margin-left: 34px;
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.4;
+            background: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #e9ecef;
+        }
+
+        .attachment-icon {
+            font-size: 1.2em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body onload="fetchEmails()">
+
+<header>
+    <h1>📩 Email Request Processor</h1>
+</header>
+
+<div class="container">
+    <h1>Request Details</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Sender</th>
+                <th>Main Intent</th>
+                <th>Request Type</th>
+                <th>Sub Request Type</th>
+                <th>Suggested Assignee</th>
+                <th>Created At</th>
+                <th>Duplicate Status</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody id="email-table-body">
+            <tr><td colspan="9">Loading emails...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div id="detailsModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="modalContent"></div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2025 Email Processor. All Rights Reserved.</p>
+</footer>
+
+<script>
+    function formatDate(dateString) {
+        const date = new Date(dateString.$date);
+        return date.toLocaleString();
+    }
+
+    // Get modal elements
+    const modal = document.getElementById("detailsModal");
+    const modalContent = document.getElementById("modalContent");
+    const span = document.getElementsByClassName("close")[0];
+
+    // Close modal when clicking the x
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Function to fetch and display emails
+    async function fetchEmails() {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/fetch_emails');
+            const data = await response.json();
+            const tableBody = document.getElementById('email-table-body');
+
+            if (data.records && data.records.length > 0) {
+                tableBody.innerHTML = '';
+
+                data.records.forEach((record, index) => {
+                    const row = document.createElement('tr');
+                    
+                    // Create duplicate status display with improved styling
+                    let duplicateStatus = '<span class="no-duplicate">✓ Unique</span>';
+                    if (record.duplicate) {
+                        duplicateStatus = `
+                            <span class="duplicate-flag">
+                                ⚠ Duplicate
+                                <span class="score-badge">
+                                    ${(record.duplicate_score * 100).toFixed(1)}%
+                                </span>
+                            </span>`;
+                    }
+
+                    // Get the first request detail (if exists)
+                    const requestDetail = record.request_details && record.request_details.length > 0 
+                        ? record.request_details[0] 
+                        : {};
+
+                    // Store the record in a global array
+                    if (!window.emailRecords) window.emailRecords = [];
+                    window.emailRecords[index] = record;
+
+                    row.innerHTML = `
+                        <td>${record.subject || 'N/A'}</td>
+                        <td>${record.sender || 'N/A'}</td>
+                        <td>${record.main_intent || 'N/A'}</td>
+                        <td>${requestDetail.request_type || 'N/A'}</td>
+                        <td>${requestDetail.sub_request_type || 'N/A'}</td>
+                        <td>${requestDetail.suggested_assignee || 'N/A'}</td>
+                        <td>${record.created_at ? formatDate(record.created_at) : 'N/A'}</td>
+                        <td>${duplicateStatus}</td>
+                        <td>
+                            <button class="btn" onclick="viewDetails(${index})">View Details</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="9">No emails found.</td></tr>';
+            }
+        } catch (error) {
+            console.error('Error fetching emails:', error);
+            document.getElementById('email-table-body').innerHTML = 
+                '<tr><td colspan="9">Error loading emails.</td></tr>';
+        }
+    }
+
+    function formatKeywords(keywords) {
+        if (!keywords) return '';
+        
+        // Helper function to capitalize each word in a string
+        function capitalizeWords(str) {
+            return str.split('_').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+            ).join(' ');
+        }
+        
+        let html = '<div class="keywords-section">';
+        
+        if (keywords.request_type_keywords && Object.keys(keywords.request_type_keywords).length > 0) {
+            html += `
+                <div class="keyword-box">
+                    <h4>Request Type Keywords</h4>
+                    <ul>
+                        ${Object.entries(keywords.request_type_keywords)
+                            .map(([key, value]) => `<li>${capitalizeWords(key)}: ${value}</li>`)
+                            .join('')}
+                    </ul>
+                </div>`;
+        }
+        
+        if (keywords.sub_request_type_keywords && Object.keys(keywords.sub_request_type_keywords).length > 0) {
+            html += `
+                <div class="keyword-box">
+                    <h4>Sub Request Type Keywords</h4>
+                    <ul>
+                        ${Object.entries(keywords.sub_request_type_keywords)
+                            .map(([key, value]) => `<li>${capitalizeWords(key)}: ${value}</li>`)
+                            .join('')}
+                    </ul>
+                </div>`;
+        }
+        
+    
+        html += '</div>';
+        return html;
+    }
+
+    function viewDetails(index) {
+        console.log('View Details clicked for index:', index);
+        const record = window.emailRecords[index];
+        console.log('Record:', record);
+
+        if (!record) {
+            console.error('No record found for index:', index);
+            return;
+        }
+
+        const requestDetails = record.request_details || [];
+        
+        // Create tab buttons
+        let tabButtonsHtml = '<div class="tab-buttons">';
+        requestDetails.forEach((_, tabIndex) => {
+            tabButtonsHtml += `
+                <button class="tab-button ${tabIndex === 0 ? 'active' : ''}" 
+                        data-tab-index="${tabIndex}"
+                        onclick="switchTab(event, ${tabIndex})">
+                    Request ${tabIndex + 1}
+                </button>`;
+        });
+        tabButtonsHtml += '</div>';
+
+        // Create tab contents
+        let tabContentsHtml = '';
+        requestDetails.forEach((requestDetail, tabIndex) => {
+            tabContentsHtml += `
+                <div class="tab-content ${tabIndex === 0 ? 'active' : ''}" data-tab-index="${tabIndex}">
+                    <div class="detail-section">
+                        <h3>Request Details</h3>
+                        <p><strong>Request Type:</strong> ${requestDetail.request_type || 'N/A'}</p>
+                        <p><strong>Sub Request Type:</strong> ${requestDetail.sub_request_type || 'N/A'}</p>
+                        <p><strong>Suggested Assignee:</strong> ${requestDetail.suggested_assignee || 'N/A'}</p>
+                        <p><strong>Customer Name:</strong> ${requestDetail.customer_name || 'N/A'}</p>
+                        <p><strong>Email Address:</strong> ${requestDetail.email_address || 'N/A'}</p>
+                        <p><strong>Account User ID:</strong> ${requestDetail.account_user_id || 'N/A'}</p>
+                        <p><strong>Urgency:</strong> ${requestDetail.urgency || 'N/A'}</p>
+                        ${requestDetail.confidence ? `
+                            <div class="confidence-section">
+                                <h4>Confidence Scores</h4>
+                                <div class="confidence-score">
+                                    <p>Request Type Confidence: ${(requestDetail.confidence.request_type_confidence).toFixed(1)}%</p>
+                                    <p>Sub Request Type Confidence: ${(requestDetail.confidence.sub_request_type_confidence).toFixed(1)}%</p>
+                                    <p>Assignment Confidence: ${(requestDetail.confidence.assignment_confidence).toFixed(1)}%</p>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    ${requestDetail.attachments && requestDetail.attachments.length > 0 ? `
+                        <div class="detail-section">
+                            <h3>Attachments</h3>
+                            <ul class="attachments-list">
+                                ${requestDetail.attachments.map(attachment => `
+                                    <li class="attachment-item">
+                                        <div class="attachment-content">
+                                            <div class="attachment-header">
+                                                <span class="attachment-icon">📎</span>
+                                                <strong class="attachment-name">${attachment.filename}</strong>
+                                            </div>
+                                            ${attachment.description ? `
+                                                <div class="attachment-description">
+                                                    ${attachment.description}
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+
+                    ${requestDetail.detailed_description ? `
+                        <div class="detail-section">
+                            <h3>Detailed Description</h3>
+                            <div class="description-box">${requestDetail.detailed_description}</div>
+                        </div>
+                    ` : ''}
+
+                    ${requestDetail.impact ? `
+                        <div class="detail-section">
+                            <h3>Impact</h3>
+                            <div class="description-box">${requestDetail.impact}</div>
+                        </div>
+                    ` : ''}
+
+                    ${requestDetail.keywords ? `
+                        <div class="detail-section">
+                            <h3>Keywords Analysis</h3>
+                            ${formatKeywords(requestDetail.keywords)}
+                        </div>
+                    ` : ''}
+
+
+                    ${requestDetail.assignment_justification ? `
+                        <div class="detail-section">
+                            <h3>Assignment Reasoning</h3>
+                            <div class="description-box">${requestDetail.assignment_justification}</div>
+                        </div>
+                    ` : ''}
+
+                     ${record.duplicate ? `
+                        <div class="detail-section">
+                            <h3>Duplicate Information</h3>
+                            <p><strong>Duplicate Score:</strong> ${(record.duplicate_score * 100).toFixed(1)}%</p>
+                            <p><strong>Duplicate Email ID:</strong> ${record.duplicate_email_id.$oid}</p>
+                        </div>
+                    ` : ''}
+                    
+                </div>`;
+        });
+
+        modalContent.innerHTML = `
+            <div class="tab-container">
+                ${tabButtonsHtml}
+                ${tabContentsHtml}
+            </div>
+        `;
+
+        modal.style.display = "block";
+    }
+
+    function switchTab(event, tabIndex) {
+        // Get the container element (modal content)
+        const container = event.target.closest('.tab-container');
+        
+        // Update tab buttons
+        const tabButtons = container.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.classList.toggle('active', button.getAttribute('data-tab-index') == tabIndex);
+        });
+
+        // Update tab contents
+        const tabContents = container.querySelectorAll('.tab-content');
+        tabContents.forEach(content => {
+            content.classList.toggle('active', content.getAttribute('data-tab-index') == tabIndex);
+        });
+    }
+
+    fetchEmails();
+</script>
+
+</body>
+</html>

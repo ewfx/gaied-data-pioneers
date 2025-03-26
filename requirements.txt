@@ -1,0 +1,48 @@
+# MongoDB dependencies
+pymongo>=4.11.3
+python-dotenv>=1.0.0
+langchain>=0.3.21
+langchain-community>=0.3.20
+langchain-mongodb>=0.5.0
+langchain-huggingface>=0.1.2
+langchain-google-genai>=2.1.1
+# Type checking and development dependencies
+typing-extensions>=4.9.0
+mypy>=1.8.0
+
+# Optional: for better JSON handling
+ujson>=5.9.0
+
+# Optional: for better error handling and logging
+python-json-logger>=2.0.7
+
+# Hugging Face for embeddings
+transformers>=4.37.2
+torch>=2.2.0
+sentence-transformers>=3.2.1
+
+#google ai
+google-cloud-vision>=2.3.2
+
+# Additional dependencies
+einops>=0.7.0
+
+# for pdf
+PyMuPDF>=1.25.4
+
+# for html
+bs4>=0.0.1
+
+# for email processing
+imaplib2>=3.6
+email-validator>=2.1.0
+
+# for UI
+streamlit>=1.32.0
+
+# fastapi
+fastapi>=0.68.0
+uvicorn>=0.15.0
+
+# for HTTP requests
+requests>=2.31.0
