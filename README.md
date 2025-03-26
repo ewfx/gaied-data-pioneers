@@ -131,7 +131,7 @@ Follow these steps to set up and run the project on your local machine:
 		MODEL_NAME="gemini-pro"                        
 		PROMPT_FILE_PATH="prompt.md"                  
 		DUPLICATE_CHECK_THRESHOLD="0.9"               
-		CREDENTIALS_PATH="cloud-vision-api-key.json"   
+		CREDENTIALS_PATH=""   
 
         ```
 
