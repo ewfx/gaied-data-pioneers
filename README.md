@@ -1,14 +1,81 @@
 # 📧 LoanServ AI – Intelligent Email Classification & Processing System
 
-## 1. Introduction
+## 1. 📝 Introduction
 
-This project is an AI-powered email triage system designed to automate the processing and classification of incoming emails, particularly for commercial bank loan servicing. It aims to solve the problem of manually sorting and routing emails, which is often time-consuming, inefficient, and prone to errors. The system analyzes email content, identifies the intent, extracts relevant information, and suggests the appropriate servicing team to handle the request. Additionally, the system performs a duplicate check to highlight near duplicate emails to save time in manual reviews.
+An AI-powered email triage system that automates the processing and classification of incoming emails for commercial bank loan servicing.
 
-## 2. Demo
+Key Features:
+* Automated email content analysis and intent identification
+* Smart routing to appropriate servicing teams
+* Information extraction from email content and attachments
+* Duplicate email detection to prevent redundant processing
+* Time-saving through automated classification and prioritization
+* Reduction in manual sorting errors
 
-Unfortunately, a publically available demo for this project isn't currently hosted. However, the `UI.html` file in the `src/frontend` directory provides a basic interface to display processed email data fetched from the backend. To see this information displayed, follow the setup steps outlined in the "How to Run" section to run the entire project locally.
 
-## 3. Inspiration
+## 2. 🎥 Demo
+
+[📊 View Full Presentation](artifacts/demo/Hackathon%20Deck%202025_Gaied-Data-Pioneers.ppt)
+
+<img src="artifacts/arch/hld_diagram.png" alt="Email Processing Flow" width="full"/>
+<img src="artifacts/demo/screenshot-1.png" alt="" />
+<img src="artifacts/demo/screenshot-2.png" alt=""/>
+<img src="artifacts/demo/screenshot-3.png" alt=""/>
+<img src="artifacts/demo/screenshot-4.png" alt=""/>
+
+
+
+### **🔍 Sample Response**
+
+```json
+{
+    "main_intent": "Dispute Incorrect Loan Charges and Payment Issues",
+    "request_details": [
+        {
+            "intent": "Dispute Incorrect Loan Charges and Payment Issues",
+            "request_type": "Payment Processing",
+            "sub_request_type": "Payment Allocation",
+            "customer_name": "Michael Smith",
+            "email_address": "michael.smith@example.com",
+            "account_user_id": "123456",
+            "urgency": "Medium",
+            "detailed_description": "The customer is disputing an incorrect charge on their loan statement for March 2024. The monthly installment was supposed to be $850, but they were charged $950. Additionally, an automatic payment was not deducted on the due date, resulting in a late fee.",
+            "impact": "Incorrect charges and late fee applied to the loan account.",
+            "steps_taken": "Customer is reaching out to customer service for clarification and resolution.",
+            "attachments": [
+                {
+                    "filename": "Loan_Statement_March2024.pdf",
+                    "description": "Loan statement for March 2024 showing discrepancies in the charged amount and a late fee."
+                }
+            ],
+            "keywords": {
+                "request_type_keywords": {
+                    "payment_amount": "unavailable",
+                    "payment_date": "unavailable",
+                    "payment_method": "Auto-debit (Failed on Due Date)",
+                    "transaction_reference_id": "unavailable"
+                },
+                "sub_request_type_keywords": {
+                    "principal_amount": "unavailable",
+                    "interest_amount": "unavailable",
+                    "fee_allocation": "Late Fee: $25",
+                    "escrow_adjustment": "unavailable"
+                },
+                "not_relevant_keywords": {}
+            },
+            "suggested_assignee": "Payments-Team",
+            "assignment_justification": "The email reports incorrect charges and payment issues, which falls under payment processing and allocation. The attachment confirms the payment discrepancies.",
+            "confidence": {
+                "request_type_confidence": 95,
+                "sub_request_type_confidence": 90,
+                "assignment_confidence": 98
+            }
+        }
+    ]
+}
+```
+
+## 3. 💡 Inspiration
 
 This solution was inspired by the need to streamline email processing in customer service and loan servicing departments. Specific inspiration came from:
 
@@ -17,7 +84,7 @@ This solution was inspired by the need to streamline email processing in custome
 *   **Faster Response Times:** Enabling faster responses to customer inquiries and requests.
 *   **Existing AI-Powered Solutions:** Leveraging the power of modern language models and vector search techniques for natural language processing.
 
-## 4. What It Does
+## 4. ⚙️ What It Does
 
 The Email Triage System provides the following key features:
 
@@ -33,7 +100,7 @@ The Email Triage System provides the following key features:
 *   **User Interface:** Provides a basic web-based user interface (UI) to view the processed emails and their analysis results.
 *	**API Endpoints**: Provides an API endpoint to fetch email records from the MongoDB database.
 
-### **Key Features**
+### **🌟 Key Features**
 
 ✅ **Automated Email Processing & Classification**  
 Automatically fetches, analyzes, and categorizes incoming emails, reducing manual effort. Uses LLM-driven intent recognition (Google Gemini API via LangChain) to accurately identify primary and secondary intents.
@@ -45,7 +112,7 @@ Extracts key attributes such as deal name, loan amount, and expiration date from
 Processes multiple request types within a single email. Suggests the most appropriate Loan Servicing Team based on identified intent and extracted information for faster and more accurate request handling.
 
 ✅ **Intelligent Keyword Extraction & Prioritization**  
-Applies hierarchy-based keyword extraction, prioritizing subject lines, attachments, and email body. Identifies missing attributes and marks them as “unavailable” while maintaining contextual accuracy.
+Applies hierarchy-based keyword extraction, prioritizing subject lines, attachments, and email body. Identifies missing attributes and marks them as "unavailable" while maintaining contextual accuracy.
 
 ✅ **Confidence Scoring & Justification**  
 Provides classification confidence scores (0-100%) with detailed explanations and reasoning for each classification and assignment decision.
@@ -66,7 +133,7 @@ Provides FastAPI endpoints (/fetch\_emails/) for system integration. Features a 
 Manages sensitive data like API keys and database credentials via environment variables for enhanced security. Supports continuous IMAP inbox monitoring for real-time email processing.
 
 
-## 5. How We Built It
+## 5. 🛠️ How We Built It
 
 The system was built using a combination of Python, FastAPI, Streamlit, and various libraries for natural language processing and data storage. The following methodologies and technologies were used:
 
@@ -82,18 +149,18 @@ The system was built using a combination of Python, FastAPI, Streamlit, and vari
 *   **IMAPlib:** Used for connecting to and fetching emails from an IMAP server.
 *   **Clean Architecture:** Aimed for separation of concerns and testability.
 
-## 6. Challenges We Faced
+## 6. 🤔 Challenges We Faced
 
 During the development of this project, we encountered several challenges:
 
-*   **Accurate Intent Classification:** Ensuring the LLM accurately classifies the intent of emails with varying language styles and content. This was addressed by using a well-defined prompt and fine-tuning the prompt through extensive testing.
-*   **Extracting Text from Attachments:** Handling different attachment types and extracting text accurately. We implemented dedicated extraction methods for PDF, HTML, and image files. Google Cloud Vision API rate limits were also a concern, and error handling was implemented to manage those.
-*   **Duplicate Detection:** Finding an efficient and reliable method for identifying near-duplicate emails. We implemented vector search using MongoDB Atlas Vector Search, which provided good performance and accuracy.  The right threshold was determined by testing the score generated by the vector search.
-*   **Managing API Keys and Credentials:** Securely storing and accessing API keys and database credentials. We used environment variables and avoided committing sensitive information to the repository.
-*   **Scalability**: The system is currently configured to fetch from an IMAP Server and process the data. This will need to be enhanced to handle large volumes of data in a real-time production environment.
-*   **Error Handling and Monitoring**: The system can benefit from better error handling, monitoring, and logging capabilities to ensure stable operation.
+*   **Accurate Intent Classification:** Ensuring the LLM classifies email intents accurately.
+*   **Extracting Text from Attachments:** Handling various attachment types for accurate text extraction.
+*   **Duplicate Detection:** Efficiently identifying near-duplicate emails using vector search.
+*   **Managing API Keys and Credentials:** Securely storing and accessing sensitive information.
+*   **Scalability:** Enhancing the system to handle large data volumes in real-time.
+*   **Error Handling and Monitoring:** Improving error management and logging capabilities.
 
-## 7. How to Run
+## 7. 🚀 How to Run
 
 Follow these steps to set up and run the project on your local machine:
 
@@ -131,7 +198,7 @@ Follow these steps to set up and run the project on your local machine:
 		MODEL_NAME="gemini-pro"                        
 		PROMPT_FILE_PATH="prompt.md"                  
 		DUPLICATE_CHECK_THRESHOLD="0.9"               
-		CREDENTIALS_PATH="cloud-vision-api-key.json"   
+		CREDENTIALS_PATH=""   
 
         ```
 
@@ -161,9 +228,9 @@ Follow these steps to set up and run the project on your local machine:
 
 7.  **Access the UI:** Open your web browser and go to `http://127.0.0.1:8501` to access the Streamlit UI.
 
-## 8. Tech Stack
+## 8. 💻 Tech Stack
 
-### **Core Technologies**
+### **🔧 Core Technologies**
 
 *   **Programming Language:** Python
     
@@ -172,7 +239,7 @@ Follow these steps to set up and run the project on your local machine:
 *   **Frontend Framework:** Streamlit
     
 
-### **Natural Language Processing (NLP)**
+### **🧠 Natural Language Processing (NLP)**
 
 *   **LangChain** – Language model orchestration
     
@@ -185,7 +252,7 @@ Follow these steps to set up and run the project on your local machine:
 *   **Hugging Face** – Pre-trained NLP models
     
 
-### **Attachment Processing**
+### **📎 Attachment Processing**
 
 *   **PyMuPDF (fitz)** – PDF parsing & text extraction
     
@@ -194,26 +261,26 @@ Follow these steps to set up and run the project on your local machine:
 *   **Google Cloud Vision API** – OCR & image-based text extraction
     
 
-### **Database & Vector Search**
+### **🗄️ Database & Vector Search**
 
 *   **Database:** MongoDB Atlas
     
 *   **Vector Search:** MongoDB Atlas Vector Search
     
 
-### **Email Handling**
+### **�� Email Handling**
 
 *   **imaplib** – Email retrieval & processing
     
 
-### **Environment Management**
+### **🔨 Environment Management**
 
 *   **Conda** – Dependency management
     
 *   **dotenv** – Configuration management
     
 
-### **Supported Operating Systems**
+### **💻 Supported Operating Systems**
 
 *   **Windows**
     
@@ -221,7 +288,7 @@ Follow these steps to set up and run the project on your local machine:
     
 *   **macOS**
 
-## 9.**Future Scalability**
+## 9. 📈 Future Scalability
 
 ✅ **Seamless Integration with Ticketing Systems** : Automate ticket or task creation in platforms like Jira, ServiceNow, or Zendesk based on classified emails, ensuring smooth workflow integration for handling requests.
 
@@ -231,7 +298,7 @@ Follow these steps to set up and run the project on your local machine:
 
 ✅ **Sentiment Analysis for Prioritization** : Analyze email tone to detect urgency or negative sentiment, helping support teams prioritize critical cases faster.
 
-✅ **Multilingual Support** : Expand the system’s capability to process and classify emails in multiple languages using multilingual language models and adapted keyword extraction.
+✅ **Multilingual Support** : Expand the system's capability to process and classify emails in multiple languages using multilingual language models and adapted keyword extraction.
 
 ✅ **Personalized Routing Rules** : Allow configurable routing rules based on sender, subject keywords, or other criteria for more precise email handling within the organization.
 
@@ -247,7 +314,7 @@ Follow these steps to set up and run the project on your local machine:
 
 ✅ **Proactive Issue Detection**: Train models to identify trends and patterns in incoming emails, allowing early detection of emerging issues for proactive resolution.
 
-## 10. Team
+## 10. 👥 Team
 
 *   **Nageswara Vejju**  
 *   **Alok Shankar** 
